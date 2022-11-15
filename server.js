@@ -1,10 +1,22 @@
-var cron = require('node-cron');
-const { updateMongoFromGoogle } = require('./functions/updateMongoFromGoogle');
-require('dotenv').config()
+require("dotenv").config();
+const express = require("express");
+const app = express();
+const port = process.env.PORT || 3000;
 
-cron.schedule('* * * * *', async () => {
-  console.log("fetching from Google");
-  const res = await updateMongoFromGoogle()
-  console.log(res)
+const { updateMongoFromGoogle } = require("./functions/updateMongoFromGoogle");
+
+updateMongoFromGoogle()
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
+app.get("/updateMongo", async (req, res) => {
+  console.log("fetching from Google");
+  const funcRes = await updateMongoFromGoogle();
+  res.json(funcRes);
+});
+
+app.listen(port, () => {
+  console.log(`Mongo Updater listening on port ${port}`);
+});
