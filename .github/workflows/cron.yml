@@ -1,0 +1,10 @@
+name: cronAPI
+on:
+  schedule:
+    - cron: '0 8 * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call update Mongo from Google API route
+        run: curl --request GET --url 'https://gphotos-cron.onrender.com/updateMongo'
